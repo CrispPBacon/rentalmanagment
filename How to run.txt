@@ -13,7 +13,7 @@
 	 - npm install
    	 - npm run dev #THIS IS FOR STARTING THE SERVER
 
-
+...
 ADMIN ACCOUNT :
 username: admin
 password: 123
