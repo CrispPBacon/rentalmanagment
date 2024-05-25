@@ -1,0 +1,20 @@
+.auth-card {
+    text-align: center;
+    /* background-color: red; */
+    width: 100%;  
+}
+
+.auth-card h1 {
+    margin: 1rem 0;
+}
+
+.auth-card-form input {
+    padding: .5rem;
+    width: 100%;
+}
+
+@media screen and (max-width: 436px) {
+    .auth-card {
+        width: 90vw;
+    }
+}

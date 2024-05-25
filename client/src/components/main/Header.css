@@ -1,0 +1,55 @@
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: white;
+}
+
+header nav {
+    height: 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5rem;
+    background-color: black;
+}
+
+header nav h1 {
+    cursor: pointer;
+}
+
+header nav h1:hover {
+    color: rgb(92, 92, 193);
+}
+
+header nav ul {
+    display: flex;
+    align-items: center;
+}
+
+header nav ul li {
+    list-style: none;
+    margin: 0 .5rem;
+    cursor: pointer;
+    padding: 1rem;
+}
+
+header nav ul li:hover {
+    background-color: rgba(255, 255, 255, 0.418);
+}
+
+header nav ul li button {
+    padding: .5rem;
+    background-color: transparent;
+}
+
+header nav ul li {
+    background-color: transparent;
+}
+
+@media screen and (max-width: 336px) {
+    header {
+        display: none;
+    }
+}
