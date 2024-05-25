@@ -34,6 +34,7 @@ async function connect(config) {
     const url = config.db_host;
     try {
         await mongoose.connect(url, {
+            dbName: "rentalmanagement",
             useNewUrlParser: true,
             useUnifiedTopology: true
         });

@@ -13,10 +13,9 @@ interface TypeRoom {
 }
 
 export default function Main() {
-  const [showRoom, setShowRoom] = useState(false);
-  // @ts-ignore
-  const [room, setRoom] = useState<TypeRoom>({});
   const { user } = useAuth();
+  const [showRoom, setShowRoom] = useState(user.isAdmin ? true : false);
+  const [room, setRoom] = useState<TypeRoom>();
 
   const getRoom = async () => {
     const res = await send_data("/api/rooms", {
