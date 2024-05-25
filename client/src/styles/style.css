@@ -46,3 +46,57 @@ body {
     left: calc(25% - .5rem);
     padding: 0 1rem;
 }
+
+.popup {
+    position: absolute;
+    width: 18rem;
+    height: 18rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 2px 2px 10px black;
+    top: 25%;
+    left: 30%;
+    /* padding: 1rem; */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    overflow: hidden;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .5rem;
+}
+.profile h3 { font-size: 1.5rem; }
+.profile h4 { font-size: 1.2rem; }
+.popup ion-icon {  font-size: 2.5rem; align-self: center; transform: rotate(45deg); position: absolute; top: 0; right: 0;} 
+.popup ion-icon:active { top: -.1rem; color: red; }
+
+.popup .head {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.writeBox {
+    /* background-color: red; */
+    /* position: absolute; */
+    width: 100%;
+    bottom: 0;
+}
+
+.writeBox div {
+    width: 100%;
+    min-height: 2rem;
+    max-height: 8rem;
+    overflow-y: auto;
+    padding: 1rem;
+    border: 2px solid white;
+}
+
+.writeBox div:empty::before {
+    content: attr(data-placeholder);
+    color: #707070;
+    font-weight: 400;
+}

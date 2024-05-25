@@ -34,9 +34,7 @@ async function connect(config) {
     const url = config.db_host;
     try {
         await mongoose.connect(url, {
-            dbName: "rentalmanagement",
-            useNewUrlParser: true,
-            useUnifiedTopology: true
+            dbName: "rentalmanagement"
         });
         console.log(`MongoDB Connected!`);
     } catch(err) {
@@ -64,8 +62,14 @@ const roomSchema = new Schema({
     date_started: { type: Date, default: null },
     date_due: { type: Date, default: null },
   }, { versionKey: false });
+const messageSchema = new Schema({
+    message: { type: String, required: true },
+    user_id: { type: Schema.Types.ObjectId, ref: 'users', required: true },
+    room_id: { type: Schema.Types.ObjectId, ref: 'rooms', required: true},
+  }, { versionKey: false });
 
 const usersCollection = mongoose.model('users', userSchema);
 const roomsCollection = mongoose.model('rooms', roomSchema);
+const messagesCollection = mongoose.model('messages', messageSchema);
 
-module.exports = { usersCollection, roomsCollection }
+module.exports = { usersCollection, roomsCollection, messagesCollection }

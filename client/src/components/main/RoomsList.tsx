@@ -10,6 +10,8 @@ interface TypeRoom {
   _id: string;
   user: string;
   occupied: boolean;
+  date_started: string;
+  date_due: string;
 }
 
 interface RoomsProps {
@@ -23,7 +25,6 @@ export default function RoomsList({ setShowRoom }: RoomsProps) {
     const res = await send_data("/api/rooms", { getRooms: {} });
     if (res.length > 0) {
       if (!rooms.equals(res)) {
-        console.log("HERE");
         setRooms(res);
       }
     } else {
@@ -87,6 +88,27 @@ function Room({ room, getRooms }: Props) {
   const { user } = useAuth();
   const [isAdmin, setAdmin] = useState(false);
   const [name, setName] = useState("");
+  const [showViewPanel, setViewPanel] = useState(false);
+  const [view, setView] = useState("");
+  const [dateDue, setDateDue] = useState<Date>();
+  const [dateStarted, setDateStarted] = useState<Date>();
+  const [started, setStarted] = useState("");
+  const [nextBill, setNext] = useState("");
+
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   useEffect(() => {
     setAdmin(user.isAdmin);
@@ -95,8 +117,25 @@ function Room({ room, getRooms }: Props) {
   useEffect(() => {
     if (room.user) {
       handleName(room.user);
+      setDateDue(new Date(room.date_due));
+      setDateStarted(new Date(room.date_due));
     }
   }, [room.user]);
+
+  useEffect(() => {
+    if (dateStarted && dateDue) {
+      setStarted(
+        `${
+          monthNames[dateStarted.getMonth() - 1]
+        } ${dateStarted.getDate()}, ${dateStarted.getFullYear()}`
+      );
+      setNext(
+        `${
+          monthNames[dateDue.getMonth()]
+        } ${dateDue.getDate()}, ${dateDue.getFullYear()}`
+      );
+    }
+  }, [dateDue]);
 
   const handleName = async (user_id: string) => {
     const res = await send_data("/api/users", { user: { _id: user_id } });
@@ -118,7 +157,6 @@ function Room({ room, getRooms }: Props) {
       rentRoom: { room_id: room._id, user_id: user._id },
     });
     if (res._id) {
-      console.log(res);
       getRooms();
       window.location.reload();
     }
@@ -132,9 +170,30 @@ function Room({ room, getRooms }: Props) {
       </span>
       {name ? (
         <>
-          <button>Profile</button>
-          <button>Payment Logs</button>
-          <button>Support</button>
+          <button
+            onClick={() => {
+              setViewPanel(true);
+              setView("Profile");
+            }}
+          >
+            Profile
+          </button>
+          <button
+            onClick={() => {
+              setViewPanel(true);
+              setView("Payment Logs");
+            }}
+          >
+            Payment Logs
+          </button>
+          <button
+            onClick={() => {
+              setViewPanel(true);
+              setView("Concerns");
+            }}
+          >
+            View Concerns
+          </button>
         </>
       ) : null}
       <button
@@ -156,19 +215,76 @@ function Room({ room, getRooms }: Props) {
     </>
   );
 
+  const Profile = (
+    <>
+      <h4 style={{ padding: "1rem" }}>
+        Full Name:{" "}
+        <span style={{ background: "black", color: "white", padding: ".5rem" }}>
+          {name.toTitleCase()}
+        </span>
+      </h4>
+      <h4 style={{ padding: "1rem" }}>
+        Date Started:{" "}
+        <span style={{ background: "black", color: "white", padding: ".5rem" }}>
+          {started}
+        </span>
+      </h4>
+      <h4 style={{ padding: "1rem" }}>
+        Next Bill:
+        <span style={{ background: "black", color: "white", padding: ".5rem" }}>
+          {nextBill}
+        </span>{" "}
+      </h4>
+    </>
+  );
+
+  const Support = <>No Concerns</>;
+
+  const PaymentLogs = <h4>No Payment Record</h4>;
+
+  const viewPanel = (
+    <>
+      <IonIcon
+        icon={add}
+        style={{
+          transform: "rotate(45deg)",
+          fontSize: "2rem",
+        }}
+        onClick={() => setViewPanel(false)}
+      />
+      <h2 style={{ color: "black", margin: "1rem 0" }}>{view}</h2>
+      {view == "Profile"
+        ? Profile
+        : view === "Payment Logs"
+        ? PaymentLogs
+        : Support}
+    </>
+  );
+
   return (
     <div className="item">
-      <h1>
-        {isAdmin ? `Room ${room.room}` : room.user ? null : `Room ${room.room}`}
-      </h1>
+      {!showViewPanel ? (
+        <>
+          <h1>
+            {isAdmin
+              ? `Room ${room.room}`
+              : room.user
+              ? null
+              : `Room ${room.room}`}
+          </h1>
 
-      <span className="head">
-        <img
-          src="images/city-apartment-building-59846.jpg"
-          alt="city-apartment-building"
-        />
-      </span>
-      {isAdmin ? adminPanel : clientPanel}
+          <span className="head">
+            <img
+              src="images/city-apartment-building-59846.jpg"
+              alt="city-apartment-building"
+            />
+          </span>
+        </>
+      ) : (
+        viewPanel
+      )}
+
+      {showViewPanel ? null : isAdmin ? adminPanel : clientPanel}
     </div>
   );
 }

@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-const { usersCollection, roomsCollection } = require("./config/db");
+const { usersCollection, roomsCollection, messagesCollection } = require("./config/db");
+
+const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
 const auth =  async(req, res) => {
     const signup = req.body.signup;
@@ -86,6 +91,20 @@ const rooms = async(req, res) => {
     const addRoom = req.body.addRoom;
     const delRoom = req.body.delRoom;
     const rentRoom = req.body.rentRoom;
+    const sendMessage = req.body.sendMessage;
+
+    if (sendMessage) {
+        const newMessage = new messagesCollection(sendMessage);
+        try {
+            await newMessage.save();
+            console.log("Message sent!");
+            return res.json({success: "Message sent!"});
+        } catch (err) {
+            console.error("Error sending message", err)
+            return res.status(500).json({error: "Internal server error"});
+        }
+           
+    }
 
     if (getRooms) {
         const data = await roomsCollection.find({});
@@ -96,8 +115,17 @@ const rooms = async(req, res) => {
 
     if (getRoom) {
         const data = await roomsCollection.findOne({user: getRoom.user_id})
-        if (data) {
-            return res.json(data);
+        if (data?._id) {
+            const date_due = `${monthNames[data.date_due.getMonth()]} ${data.date_due.getDate()}, ${data.date_due.getFullYear()}`;
+            const date_started = `${monthNames[data.date_started.getMonth()]} ${data.date_started.getDate()}, ${data.date_started.getFullYear()}`;
+            const room_data = {
+                _id: data._id,
+                room: data.room,
+                user: data.user,
+                date_started: date_started,
+                date_due: date_due
+            }
+            return res.json(room_data);
         }
         return res.json({error: "No room returned"});
     }
