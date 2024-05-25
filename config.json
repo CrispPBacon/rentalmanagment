@@ -1,3 +1,3 @@
 {
-    "db_host": "mongodb://localhost:27017/rentalmanagement"
+    "db_host": "mongodb+srv://crisppbacon:Blacks132@cluster0.rarepeo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 }

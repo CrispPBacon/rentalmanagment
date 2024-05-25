@@ -1,0 +1,14 @@
+# 1 - Download nodejs
+    - https://nodejs.org/en
+
+# 2 - Go to the App file then search cmd
+    - on command prompt use:
+         - cd client
+	 - npm install
+	 - npm run dev #THIS IS FOR STARTING THE SERVER
+
+# 3 - Go to App file then search cmd
+    - on command prompt use:
+	 - cd server
+	 - npm install
+   	 - npm run dev #THIS IS FOR STARTING THE SERVER

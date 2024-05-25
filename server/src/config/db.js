@@ -33,7 +33,10 @@ function handleResult(err, config) {
 async function connect(config) {
     const url = config.db_host;
     try {
-        await mongoose.connect(url);
+        await mongoose.connect(url, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
         console.log(`MongoDB Connected!`);
     } catch(err) {
         console.error("Connection Error", err);
