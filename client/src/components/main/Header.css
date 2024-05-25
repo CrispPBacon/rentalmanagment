@@ -17,10 +17,20 @@ header nav {
 
 header nav h1 {
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 header nav h1:hover {
     color: rgb(92, 92, 193);
+}
+
+header nav h1 img {
+    width: 5rem;
+    /* position: absolute; */
+    z-index: 213;
+    background-color: white;
+    margin-right: .5rem;
 }
 
 header nav ul {

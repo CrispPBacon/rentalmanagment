@@ -10,7 +10,8 @@ export default function Header({ setShowRoom }: Type) {
     <header>
       <nav>
         <h1 onClick={() => setShowRoom(false)}>
-          {user.fullname.toTitleCase()}
+          <img src="images/smartrent.png" alt="SMART RENT" />
+          <span>{user.fullname.toTitleCase()}</span>
         </h1>
         <ul>
           {user.isAdmin ? <li>Payment Logs</li> : null}
